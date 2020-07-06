@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react'
 import {useMutation} from '@apollo/client'
 import {LOGIN} from '../graphql/graphql'
 
-const LoginForm = ({setToken}) => {
+const LoginForm = ({show, setToken}) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [errorMessage, setErrorMessage ] = useState()
@@ -25,6 +25,9 @@ const LoginForm = ({setToken}) => {
     event.preventDefault()
     await login({variables: {username, password}})
   }
+  if(!show) {
+    return null
+  }
 
   return (
     <div>
@@ -44,6 +47,7 @@ const LoginForm = ({setToken}) => {
             onChange={({ target }) => setPassword(target.value)}
           />
         </div>
+        <pre>*hint : password is password</pre>
         {errorMessage && <p>{errorMessage}</p>}
         <button type='submit'>Login</button>
       </form>

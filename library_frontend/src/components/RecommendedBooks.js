@@ -2,39 +2,24 @@ import React, {useEffect, useState} from 'react'
 import {ALL_BOOKS} from '../graphql/graphql'
 import {useQuery} from '@apollo/client'
 
-const Books = ({show}) => {
+const RecommendedBooks = ({show, fixGenre}) => {
   const {loading, error, data} = useQuery(ALL_BOOKS)
   const [books, setBooks] = useState([])
-  const [filterGenre, setFilterGenre] = useState('')
-  const [genres, setGenres] = useState([])
 
   const byFilterGenre = (bookArr) => {
-    if (filterGenre) {
-      return bookArr.filter(book => book.genres.includes(filterGenre))
+    if (fixGenre) {
+      return bookArr.filter(book => book.genres.includes(fixGenre))
     } else {
       return [...bookArr]
     }
-  }
-  const extractGenres = (bookArr = []) => {
-    let genresObj = bookArr.reduce((o, book) => {
-      book.genres.forEach(genre => o[genre] = 1)
-      return o
-    }, {})
-
-    return Object.keys(genresObj)
   }
 
   useEffect(() => {
     if (data && data.allBooks) {
       setBooks(byFilterGenre(data.allBooks))
     }
-  }, [data,filterGenre])
-
-  useEffect(() => {
-    if (data && data.allBooks) {
-      setGenres(extractGenres(data.allBooks))
-    }
   }, [data])
+
 
   if (!show) {
     return null
@@ -55,12 +40,7 @@ const Books = ({show}) => {
   return (
     <div>
       <h2>books</h2>
-      {
-        filterGenre && <p>in genre <strong>{filterGenre}</strong></p>
-      }
-      {
-        genres && genres.map(genre => <button key={genre} onClick={() => setFilterGenre(genre)}>{genre}</button>)
-      }
+      <p>in genre <strong>{fixGenre}</strong></p>
       <table>
         <tbody>
         <tr>
@@ -85,4 +65,4 @@ const Books = ({show}) => {
   )
 }
 
-export default Books
+export default RecommendedBooks
