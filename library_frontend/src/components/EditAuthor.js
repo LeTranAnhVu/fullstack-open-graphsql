@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import {useMutation} from '@apollo/client'
-import {ALL_AUTHORS, CREATE_BOOK, EDIT_AUTHOR} from '../graphql/graphql'
+import {ALL_AUTHORS, EDIT_AUTHOR} from '../graphql/graphql'
 import Select from 'react-select'
 
 const EditAuthor = ({authors}) => {
