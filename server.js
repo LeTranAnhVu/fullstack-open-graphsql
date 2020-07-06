@@ -1,6 +1,6 @@
 const {ApolloServer} = require('apollo-server')
 const {bookTypeDefs} = require('./src/typesDef')
-const resolvers = require('./src/resolvers')
+const {resolvers, context} = require('./src/resolvers')
 const mongoConnection = require('./src/mongoConnect')
 
 // connect database
@@ -14,7 +14,8 @@ const corsOptions = {
 const server = new ApolloServer({
   typeDefs: [bookTypeDefs],
   resolvers,
-  cors: corsOptions
+  cors: corsOptions,
+  context: context
 })
 
 server.listen().then(({url}) => {
