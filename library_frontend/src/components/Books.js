@@ -1,11 +1,34 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
+import {ALL_BOOKS} from '../graphql/graphql'
+import {useQuery} from '@apollo/client'
 
-const Books = (props) => {
-  if (!props.show) {
+const Books = ({show}) => {
+  const {loading, error, data} = useQuery(ALL_BOOKS)
+  const [books, setBooks] = useState()
+
+  useEffect(()=> {
+    if(data && data.allBooks){
+      setBooks(data.allBooks)
+    }
+
+  },[data])
+
+  if (!show) {
     return null
   }
 
-  const books = []
+  if(error) {
+    return <div>
+      <p>errrorrr : reload page might fix problem, I dont know but I found graphql quite unstable</p>
+      <p>Error will cause when react code is update or first run</p>
+    </div>
+  }
+  if(loading) {
+    return <p>loading ...</p>
+  }
+  if(!books) {
+    return <p>loading ...</p>
+  }
 
   return (
     <div>

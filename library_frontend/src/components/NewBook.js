@@ -1,24 +1,34 @@
 import React, { useState } from 'react'
+import {useMutation} from '@apollo/client'
+import {CREATE_BOOK} from '../graphql/graphql'
 
-const NewBook = (props) => {
+const NewBook = ({show}) => {
   const [title, setTitle] = useState('')
-  const [author, setAuhtor] = useState('')
+  const [author, setAuthor] = useState('')
   const [published, setPublished] = useState('')
   const [genre, setGenre] = useState('')
   const [genres, setGenres] = useState([])
+  const [errorMessage, setErrorMessage ] = useState()
 
-  if (!props.show) {
+  const [createBook] = useMutation(CREATE_BOOK, {
+    onError: (errors) => {
+      console.log(errors)
+      setErrorMessage('cannot log error with error.graphQLErrors[0].message')
+    }
+  })
+
+  if (!show) {
     return null
   }
 
   const submit = async (event) => {
     event.preventDefault()
-    
+    await createBook({variables: {title, author, published: parseInt(published), genres}})
     console.log('add book...')
 
     setTitle('')
     setPublished('')
-    setAuhtor('')
+    setAuthor('')
     setGenres([])
     setGenre('')
   }
@@ -27,7 +37,6 @@ const NewBook = (props) => {
     setGenres(genres.concat(genre))
     setGenre('')
   }
-
   return (
     <div>
       <form onSubmit={submit}>
@@ -42,7 +51,7 @@ const NewBook = (props) => {
           author
           <input
             value={author}
-            onChange={({ target }) => setAuhtor(target.value)}
+            onChange={({ target }) => setAuthor(target.value)}
           />
         </div>
         <div>
@@ -63,6 +72,7 @@ const NewBook = (props) => {
         <div>
           genres: {genres.join(' ')}
         </div>
+        {errorMessage && <p>{errorMessage}</p>}
         <button type='submit'>create book</button>
       </form>
     </div>

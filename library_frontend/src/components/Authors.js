@@ -1,12 +1,36 @@
   
-import React from 'react'
+import React, {useEffect, useState} from 'react'
+import {ALL_AUTHORS} from '../graphql/graphql'
+import {useQuery} from '@apollo/client'
+import EditAuthor from './EditAuthor'
 
-const Authors = (props) => {
-  if (!props.show) {
+const Authors = ({show}) => {
+  const {loading, error, data} = useQuery(ALL_AUTHORS)
+  const [authors, setAuthors] = useState()
+
+  useEffect(()=> {
+    if(data && data.allAuthors){
+      setAuthors(data.allAuthors)
+    }
+
+  },[data])
+
+  if (!show) {
     return null
   }
-  const authors = []
 
+  if(error) {
+    return <div>
+      <p>errrorrr : reload page might fix problem, I dont know but I found graphql quite unstable</p>
+      <p>Error will cause when react code is update or first run</p>
+    </div>
+  }
+  if(loading) {
+    return <p>loading ...</p>
+  }
+  if(!authors) {
+    return <p>loading ...</p>
+  }
   return (
     <div>
       <h2>authors</h2>
@@ -30,7 +54,10 @@ const Authors = (props) => {
           )}
         </tbody>
       </table>
+      <hr/>
+      <h2>Update born</h2>
 
+      <EditAuthor authors={authors}/>
     </div>
   )
 }
