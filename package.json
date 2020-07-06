@@ -12,6 +12,7 @@
     "uuid": "^8.2.0"
   },
   "scripts": {
-    "dev": "nodemon server.js"
+    "dev": "nodemon --ignore './library_frontend/' server.js",
+    "start": "node server.js"
   }
 }

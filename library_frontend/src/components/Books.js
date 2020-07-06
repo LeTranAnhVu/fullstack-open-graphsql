@@ -19,8 +19,7 @@ const Books = ({show}) => {
 
   if(error) {
     return <div>
-      <p>errrorrr : reload page might fix problem, I dont know but I found graphql quite unstable</p>
-      <p>Error will cause when react code is update or first run</p>
+      <p>error: Internal error</p>
     </div>
   }
   if(loading) {

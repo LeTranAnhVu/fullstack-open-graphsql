@@ -4,7 +4,6 @@ import {ALL_AUTHORS, CREATE_BOOK, EDIT_AUTHOR} from '../graphql/graphql'
 import Select from 'react-select'
 
 const EditAuthor = ({authors}) => {
-  const [name, setName] = useState('')
   const [born, setBorn] = useState('')
   const [errorMessage, setErrorMessage] = useState()
   const [selectedAuthor, setSelectedAuthor] = useState()
@@ -39,7 +38,6 @@ const EditAuthor = ({authors}) => {
     event.preventDefault()
     await editAuthor({variables: {name: selectedAuthor.value, born: parseInt(born)}})
     console.log('update ...')
-    setName('')
     setBorn('')
   }
   return (

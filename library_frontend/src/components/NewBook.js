@@ -12,7 +12,7 @@ const NewBook = ({show}) => {
 
   const [createBook] = useMutation(CREATE_BOOK, {
     onError: (errors) => {
-      console.log(errors)
+      console.log()
       setErrorMessage('cannot log error with error.graphQLErrors[0].message')
     }
   })
@@ -20,6 +20,7 @@ const NewBook = ({show}) => {
   if (!show) {
     return null
   }
+
 
   const submit = async (event) => {
     event.preventDefault()

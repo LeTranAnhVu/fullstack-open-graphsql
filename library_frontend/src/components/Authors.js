@@ -21,8 +21,7 @@ const Authors = ({show}) => {
 
   if(error) {
     return <div>
-      <p>errrorrr : reload page might fix problem, I dont know but I found graphql quite unstable</p>
-      <p>Error will cause when react code is update or first run</p>
+      <p>error: internal</p>
     </div>
   }
   if(loading) {
@@ -56,7 +55,6 @@ const Authors = ({show}) => {
       </table>
       <hr/>
       <h2>Update born</h2>
-
       <EditAuthor authors={authors}/>
     </div>
   )
