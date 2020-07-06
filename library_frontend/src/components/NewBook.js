@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import {useMutation} from '@apollo/client'
-import {ALL_BOOKS, CREATE_BOOK} from '../graphql/graphql'
+import {ALL_AUTHORS, ALL_BOOKS, ALL_GENRES, CREATE_BOOK} from '../graphql/graphql'
 
 const NewBook = ({show}) => {
   const [title, setTitle] = useState('')
@@ -14,7 +14,7 @@ const NewBook = ({show}) => {
     onError: (errors) => {
       setErrorMessage('cannot log error with error.graphQLErrors[0].message')
     },
-    refetchQueries: [{query: ALL_BOOKS}]
+    refetchQueries: [{query: ALL_BOOKS}, {query: ALL_GENRES}, {query: ALL_AUTHORS}]
   })
 
   if (!show) {

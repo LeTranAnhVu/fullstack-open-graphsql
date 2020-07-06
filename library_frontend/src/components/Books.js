@@ -1,38 +1,26 @@
 import React, {useEffect, useState} from 'react'
-import {ALL_BOOKS} from '../graphql/graphql'
-import {useQuery} from '@apollo/client'
+import {ALL_BOOKS, ALL_GENRES} from '../graphql/graphql'
+import {useLazyQuery, useQuery} from '@apollo/client'
+import Genres from './Genres'
 
 const Books = ({show}) => {
-  const {loading, error, data} = useQuery(ALL_BOOKS)
+  const [getBooks, {error, loading, data}] = useLazyQuery(ALL_BOOKS)
   const [books, setBooks] = useState([])
   const [filterGenre, setFilterGenre] = useState('')
-  const [genres, setGenres] = useState([])
 
-  const byFilterGenre = (bookArr) => {
-    if (filterGenre) {
-      return bookArr.filter(book => book.genres.includes(filterGenre))
-    } else {
-      return [...bookArr]
+  useEffect(() => {
+    if(filterGenre) {
+      getBooks({ variables: { genre: filterGenre } })
+    }else {
+      getBooks()
     }
-  }
-  const extractGenres = (bookArr = []) => {
-    let genresObj = bookArr.reduce((o, book) => {
-      book.genres.forEach(genre => o[genre] = 1)
-      return o
-    }, {})
 
-    return Object.keys(genresObj)
-  }
+  },[filterGenre])
+
 
   useEffect(() => {
     if (data && data.allBooks) {
-      setBooks(byFilterGenre(data.allBooks))
-    }
-  }, [data,filterGenre])
-
-  useEffect(() => {
-    if (data && data.allBooks) {
-      setGenres(extractGenres(data.allBooks))
+      setBooks(data.allBooks)
     }
   }, [data])
 
@@ -56,11 +44,10 @@ const Books = ({show}) => {
     <div>
       <h2>books</h2>
       {
-        filterGenre && <p>in genre <strong>{filterGenre}</strong></p>
+        filterGenre ? <p>in genre <strong>{filterGenre}</strong></p>
+          : <p>in <strong>all</strong></p>
       }
-      {
-        genres && genres.map(genre => <button key={genre} onClick={() => setFilterGenre(genre)}>{genre}</button>)
-      }
+      <Genres setFilterGenre={setFilterGenre}/>
       <table>
         <tbody>
         <tr>

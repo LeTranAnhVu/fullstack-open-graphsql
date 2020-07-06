@@ -24,12 +24,16 @@ const bookTypeDefs = gql`
   type Token {
     accessToken: String!
   }
+  type Genre {
+    genre : String!
+  }
   
    type Query {
     bookCount: Int!
     authorCount: Int!
     allBooks(author: String, genre: String): [Book!]!
     allAuthors: [Author!]!,
+    genres: [Genre!]!
     me: User
   }
   

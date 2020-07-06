@@ -30,6 +30,18 @@ const resolvers = {
     },
     me: (root, args, context) => {
       return context.currentUser
+    },
+    genres: () => {
+      return Book.aggregate([
+        {$unwind: '$genres'},
+        {$group: {_id: {$toLower: '$genres'}}},
+        {
+          $project: {
+            _id: 0,
+            genre: '$_id',
+          }
+        }
+      ])
     }
   },
   Mutation: {
