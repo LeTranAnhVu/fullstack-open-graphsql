@@ -6,7 +6,7 @@
   "author": "letrananhvu <letrananhvu>",
   "license": "MIT",
   "dependencies": {
-    "apollo-server": "^2.15.1",
+    "apollo-server": "^2.25.4",
     "dotenv": "^8.2.0",
     "graphql": "^15.3.0",
     "jsonwebtoken": "^8.5.1",
